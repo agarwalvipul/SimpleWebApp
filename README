@@ -1,1 +1,28 @@
-This file was created by IntelliJ IDEA 12.1.5 for binding GitHub repository
+You need to prepare your database or change "hibernate.hbm2ddl.auto" value to "create":
+
+create table webapp.roles (role_id integer not null auto_increment, role varchar(100) not null, primary key (role_id))
+;
+create table webapp.users (id integer not null auto_increment, accountNonExpired boolean not null, accountNonLocked boolean not null, activation_key varchar(100), credentialsNonExpired boolean not null, email varchar(100) not null, enabled boolean not null, name varchar(100) not null, password_hash varchar(100) not null, role_id integer not null, primary key (id))
+;
+alter table webapp.users add constraint UK_6dotkott2kjsp8vw4d0m25fb7 unique (email)
+;
+alter table webapp.users add constraint UK_skwekn0grc2y63k1hom5v4k7r unique (activation_key)
+;
+alter table webapp.users add index FK_krvotbtiqhudlkamvlpaqus0t (role_id), add constraint FK_krvotbtiqhudlkamvlpaqus0t foreign key (role_id) references webapp.roles (role_id)
+;
+
+!For properly work table webapp.roles must contain role "USER":
+insert into webapp.roles
+	 values (-1, 'USER');
+commit;
+
+
+Specified frameworks i just recently started to learn so my application have wide TODO list.
+
+TODO:
+// need to use @Transactional annotation in my secrive class (It solved problem with LAZY fetch type in Entities)
+// correct handle errors from MailService and DAL
+// add localization support
+// need more tests
+// add password reminder
+// use GUID for activationKey, CSRF on prodution application
